@@ -51,8 +51,13 @@ export default {
     methods: {
         goSearch(){
             this.$router.push({
-                path:'/search',
-                params:this.keyword
+                name:'search',
+                params:{
+                    keyword:this.keyword
+                },
+                query:{
+                    id:'2'
+                }
 
             })
             

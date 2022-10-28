@@ -15,10 +15,16 @@ export default [
         meta:{show:true}
 
     },
-    {  
-        path:'/search/:keyword',
+    {   name:'search',
+        path:'/search/:keyword?',
         component:Search,
-        meta:{show:true}
+        meta:{show:true},
+        props({params,query}){
+            return {
+                keyword:params.keyword,
+                id:query.id
+            }
+        }
 
     },
     {
