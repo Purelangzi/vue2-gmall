@@ -80,7 +80,7 @@ export default {
   },
   computed: {
     ...mapState({
-      categoryList: (state) => state.home.categoryList,
+      categoryList: state => state.home.categoryList,
     }),
   },
   methods: {
