@@ -14,6 +14,10 @@ import Header from './components/Header'
 export default {
   components: { Header, Footer },
   name: 'App',
+  created() {
+    // 只需要发一次请求,请求获取三级联动的数据
+    this.$store.dispatch("home/categoryList");
+  },
 
 }
 </script>
