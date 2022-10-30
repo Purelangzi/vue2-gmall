@@ -4,6 +4,8 @@ import router from '@/router'
 // 三级联动全局组件
 import TypeNav from '@/components/TypeNav'
 import store from '@/store'
+import '@/mocks'
+
 Vue.config.productionTip = false
 
 // 注册全局组件
