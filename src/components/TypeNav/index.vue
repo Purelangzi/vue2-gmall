@@ -2,11 +2,11 @@
   <div class="type-nav">
     <div class="container">
       <!-- 事件委派 -->
-      <div @mouseleave="currentIndex = -1;">
+      <div @mouseleave="currentIndex = -1">
         <h2 class="all">全部商品分类</h2>
         <!-- 三级联动 -->
         <div class="sort">
-          <div class="all-sort-list2">
+          <div class="all-sort-list2" @click="goSearch">
             <!-- 动态添加类名cur -->
             <div
               class="item"
@@ -14,31 +14,46 @@
               :key="item1.categoryId"
               :class="{ cur: currentIndex == item1.categoryId }"
             >
-              <h3
-                @mouseenter="changeIndex(item1.categoryId)"   
-              >
-                <a href="">{{ item1.categoryName }}</a>
+              <h3 @mouseenter="changeIndex(item1.categoryId)">
+                <a
+                  :data-categoryName="item1.categoryName"
+                  :data-category1Id="item1.categoryId"
+                  style="cursor: pointer"
+                  >{{ item1.categoryName }}</a
+                >
               </h3>
               <!-- 二级、三级分类 -->
-              <div class="item-list clearfix"
-              :style="{display:currentIndex == item1.categoryId?'block':'none'}"
+              <div
+                class="item-list clearfix"
+                :style="{
+                  display: currentIndex == item1.categoryId ? 'block' : 'none',
+                }"
               >
                 <div
                   class="subitem"
                   v-for="item2 in item1.categoryChild"
                   :key="item2.categoryId"
-                  
                 >
                   <dl class="fore">
                     <dt>
-                      <a href="">{{ item2.categoryName }}</a>
+                      <a
+                        :data-categoryName="item2.categoryName"
+                        :data-category2Id="item2.categoryId"
+                        style="cursor: pointer"
+                        >{{ item2.categoryName }}</a
+                      >
                     </dt>
                     <dd>
                       <em
                         v-for="item3 in item2.categoryChild"
                         :key="item3.categoryId"
                       >
-                        <a href="">{{ item3.categoryName }}</a>
+                        <a
+                          :data-categoryName="item3.categoryName"
+                          :data-category3Id="item3.categoryId"
+                          style="cursor: pointer"
+                          >{{ item3.categoryName }}</a
+                        >
                       </em>
                     </dd>
                   </dl>
@@ -66,7 +81,7 @@
 <script>
 import { mapState } from "vuex";
 // 按需引入插件中的节流
-import throttle from 'lodash/throttle'
+import throttle from "lodash/throttle";
 
 export default {
   name: "TypeNav",
@@ -80,16 +95,36 @@ export default {
   },
   computed: {
     ...mapState({
-      categoryList: state => state.home.categoryList,
+      categoryList: (state) => state.home.categoryList,
     }),
   },
   methods: {
-    
-    // 鼠标进入,用throttle只能用es5写法，throttle的回调不能写箭头函数，会出现this指向问题
-    changeIndex:throttle(function(index){
+    // 鼠标进入节流,用throttle只能用es5写法，throttle的回调不能写箭头函数，会出现this指向问题
+    changeIndex: throttle(function (index) {
       this.currentIndex = index;
-    },50)
-    
+    }, 50),
+    // 编程式导航+事件委托
+    goSearch({ target }) {
+      // 获取到a节点的自定义属性
+      let { categoryname, category1id, category2id, category3id } =
+        target.dataset;
+      // 点击的是a标签，则区分哪一级的分类
+      if (categoryname) {
+        // 整理路由跳转的参数
+        let location = { name: "search" };
+        let query = { categoryName: categoryname };
+        if (category1id) {
+          query.category1Id = category1id;
+        } else if (category2id) {
+          query.category2Id = category2id;
+        } else if (category3id) {
+          query.category3Id = category3id;
+        }
+        // 参数合并
+        location.query = query;
+        this.$router.push(location);
+      }
+    },
   },
 };
 </script>
