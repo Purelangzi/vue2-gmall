@@ -5,6 +5,8 @@ import router from '@/router'
 import TypeNav from '@/components/TypeNav'
 import store from '@/store'
 import '@/mocks'
+// 引入swiper样式
+import 'swiper/css/swiper.min.css'
 
 Vue.config.productionTip = false
 

@@ -9,10 +9,6 @@ export const reqCategoryList =()=>{
     return request({method:'get',url:'/product/getBaseCategoryList'})
 }
 
-// 获取模拟的首页轮播图接口
-export const mockGetBanner = ()=>{
-    return mockRequest.get('/banner')
-}
-export const mockGetfloor = ()=>{
-    return mockRequest.get('/floor')
-}
+// 获取模拟的首页轮播图和floor接口
+export const mockGetBanner = ()=> mockRequest.get('/banner')
+export const mockGetFloor = ()=> mockRequest.get('/floor')
