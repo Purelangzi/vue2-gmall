@@ -98,6 +98,10 @@ export default {
     if (this.$route.name == "search") this.show = false;
   },
   computed: {
+    /* categoryList() {
+      return this.$store.state.home.categoryList;
+    }, */
+    // ...mapState('home',['categoryList'])
     ...mapState({
       categoryList: (state) => state.home.categoryList,
     }),

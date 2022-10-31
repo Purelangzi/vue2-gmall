@@ -92,7 +92,22 @@
 </template>
 
 <script>
-export default {};
+import { mapState } from 'vuex';
+export default {
+  name:'ListContainer',
+  mounted() {
+    this.$store.dispatch('home/getBannerList')
+  },
+  computed: {
+    /* bannerList(){
+      return this.$store.state.home.bannerList
+    } */
+    // ...mapState('home',['bannerList'])
+    ...mapState({
+      bannerList:state=>state.home.bannerList
+    })
+  }
+};
 </script>
 
 <style lang="less" scoped>
