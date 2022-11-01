@@ -8,7 +8,13 @@ import mockRequest from "./mockRequest";
 export const reqCategoryList =()=>{
     return request({method:'get',url:'/product/getBaseCategoryList'})
 }
+// 请求搜索的数据
+export const reqSearchList = (searchParams) => {
+    return request({method:'post',url:'/list',data:searchParams})
+}
 
-// 获取模拟的首页轮播图和floor接口
+// 获取模拟的首页banner和floor接口实现轮播图
 export const mockGetBanner = ()=> mockRequest.get('/banner')
 export const mockGetFloor = ()=> mockRequest.get('/floor')
+
+// export const mockCategoryList = ()=> mockRequest.get('/categoryList')

@@ -6,8 +6,7 @@
         <div class="fr">
           <ul class="nav-tabs clearfix">
             <li
-              :class="{ active: index == 0 }"
-              v-for="(nav, index) in floor.navList"
+              v-for="nav in floor.navList"
               :key="nav.id"
             >
               <a :href="nav.url" data-toggle="tab">{{ nav.text }}</a>
@@ -26,25 +25,7 @@
               </ul>
               <img :src="floor.imgUrl" />
             </div>
-            <div class="floorBanner">
-              <div class="swiper-container">
-                <div class="swiper-wrapper">
-                  <div
-                    class="swiper-slide"
-                    v-for="carousel in floor.carouselList"
-                    :key="carousel.id"
-                  >
-                    <img :src="carousel.imgUrl" />
-                  </div>
-                </div>
-                <!-- 如果需要分页器 -->
-                <div class="swiper-pagination"></div>
-
-                <!-- 如果需要导航按钮 -->
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-              </div>
-            </div>
+            <Carousel :carouselList="floor.carouselList"/>
             <div class="split">
               <span class="floor-x-line"></span>
               <div class="floor-conver-pit">
@@ -74,39 +55,13 @@
 </template>
 
 <script>
-import Swiper from "swiper";
+
 
 
 export default {
   name: "Floor",
   props: ["floor"],
-  mounted() {},
-  watch: {
-    floor: {
-      immediate: true, // 初始化时监听
-      handler() {
-        this.$nextTick(() => {
-          new Swiper(".swiper-container", {
-            autoplay:{
-            delay: 3000,// 自动轮播
-            disableOnInteraction:false,//用户操作swiper之后，是否禁止autoplay
-          },
-            loop: true, // 循环模式选项
-            // 如果需要分页器
-            pagination: {
-              el: ".swiper-pagination",
-              clickable: true, // 点击分页器会切换
-            },
-            // 如果需要前进后退按钮
-            navigation: {
-              nextEl: ".swiper-button-next",
-              prevEl: ".swiper-button-prev",
-            },
-          });
-        });
-      },
-    },
-  },
+  
 };
 </script>
 
@@ -158,7 +113,7 @@ export default {
               }
             }
 
-            &.active {
+            &:first-child {
               a {
                 color: #e1251b;
               }

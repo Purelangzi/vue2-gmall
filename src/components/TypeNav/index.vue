@@ -101,10 +101,10 @@ export default {
     /* categoryList() {
       return this.$store.state.home.categoryList;
     }, */
-    // ...mapState('home',['categoryList'])
-    ...mapState({
+    ...mapState('home',['categoryList'])
+    /* ...mapState({
       categoryList: (state) => state.home.categoryList,
-    }),
+    }), */
   },
   methods: {
     // 鼠标进入节流,用throttle只能用es5写法，throttle的回调不能写箭头函数，会出现this指向问题
@@ -183,22 +183,27 @@ export default {
       left: 0;
       top: 45px;
       width: 210px;
-      height: 461px;
+      height: 480px;
       position: absolute;
       background: #fafafa;
       z-index: 999;
+      
 
       .all-sort-list2 {
+        height: 480px;
+        overflow: hidden;
         .item {
           h3 {
             line-height: 30px;
             font-size: 14px;
             font-weight: 400;
             overflow: hidden;
-            padding: 0 20px;
+            
             margin: 0;
 
             a {
+              display: block;
+              padding: 0 20px;
               color: #333;
             }
           }

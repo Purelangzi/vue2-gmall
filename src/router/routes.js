@@ -25,7 +25,7 @@ export default [
                 keyword: params.keyword,
                 id: query.id
             }
-        }
+        },
 
     },
     {
