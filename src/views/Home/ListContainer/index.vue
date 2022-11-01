@@ -120,8 +120,10 @@ export default {
     bannerList() {
       this.$nextTick(() => {
         new Swiper(".swiper-container", {
-          autoplay: true, // 自动轮播
-          disableOnInteraction:false,//用户操作swiper之后，是否禁止autoplay
+          autoplay:{
+            delay: 3000,// 自动轮播
+            disableOnInteraction:false,//用户操作swiper之后，是否禁止autoplay
+          },
           loop: true, // 循环模式选项
           // 如果需要分页器
           pagination: {
