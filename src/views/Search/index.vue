@@ -15,9 +15,9 @@
             <!-- 分类的面包屑 -->
             <li class="with-x"  v-show="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">x</i></li>
             <!-- 关键字的面包屑 -->
-            <li class="with-x"  v-show="searchParams.keyword&&searchParams.keyword!==searchParams.trademark.split(':')[1]">{{searchParams.keyword}}<i @click="removeKeyWord">x</i></li>
+            <li class="with-x"  v-show="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyWord">x</i></li>
              <!-- 品牌的面包屑 -->
-            <li class="with-x"  v-show="searchParams.trademark&&searchParams.keyword!==searchParams.trademark.split(':')[1]">{{searchParams.trademark.split(':')[1]}}<i @click="removeTradeMark">x</i></li>
+            <li class="with-x"  v-show="searchParams.trademark">{{searchParams.trademark.split(':')[1]}}<i @click="removeTradeMark">x</i></li>
           </ul>
         </div>
 
@@ -184,14 +184,11 @@ export default {
     },
     //绑定自定义事件接收子组件传递过来的品牌数据
     trademarkInfo(trademark){
-      console.log(trademark.tmName,this.searchParams.keyword,this.searchParams.trademark.split(':')[1]);
-      // 搜索关键字和品牌同名就不用发请求,点相同的品牌不发请求
-      if(trademark.tmName == this.searchParams.keyword ||trademark.tmName==this.searchParams.trademark.split(':')[1]) return
+      // 点相同的品牌不发请求
+      if(trademark.tmName==this.searchParams.trademark.split(':')[1]) return
       //传递品牌参数的格式 trademark: "6:VIVO"
       this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`
-      
-      
-        this.getSearchList() 
+      this.getSearchList() 
       
       
     },
