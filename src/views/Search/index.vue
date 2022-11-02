@@ -12,15 +12,17 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <!-- 分类的面包屑 -->
+            <li class="with-x"  v-show="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">x</i></li>
+            <!-- 关键字的面包屑 -->
+            <li class="with-x"  v-show="searchParams.keyword&&searchParams.keyword!==searchParams.trademark.split(':')[1]">{{searchParams.keyword}}<i @click="removeKeyWord">x</i></li>
+             <!-- 品牌的面包屑 -->
+            <li class="with-x"  v-show="searchParams.trademark&&searchParams.keyword!==searchParams.trademark.split(':')[1]">{{searchParams.trademark.split(':')[1]}}<i @click="removeTradeMark">x</i></li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector :attrsList="attrsList" :trademarkList="trademarkList" />
+        <SearchSelector @trademarkInfo="trademarkInfo" :attrsList="attrsList" :trademarkList="trademarkList" />
 
         <!--details-->
         <div class="details clearfix">
@@ -130,14 +132,14 @@ export default {
     return {
       searchParams: {
         // 各级分类id和分类名字
-        category1Id:"",
-        category2Id:"",
-        category3Id: "",
-        categoryName: "",
+        category1Id:undefined,
+        category2Id:undefined,
+        category3Id: undefined,
+        categoryName: undefined,
         // 搜索关键字
-        keyword: "",
+        keyword: undefined,
         // 排序
-        order: "",
+        order: undefined,
         // 页码
         pageNo: 1,
         // 每页数量
@@ -166,16 +168,48 @@ export default {
     getSearchList() {
       this.$store.dispatch("search/getSearchList",this.searchParams);
     },
+    // 删除面包屑的三级分类
+    removeCategoryName(){
+      // 给服务器带的参数清空
+      this.searchParams.categoryName = undefined
+      // 路由跳转，如果有路由中还有关键字params就要携带上，比如点击分类>搜索关键字>删除分类>跳转到关键字
+      this.$router.push({name:'search',params:this.$route.params})
+    },
+    // 删除面包屑的关键字
+    removeKeyWord(){
+      this.searchParams.keyword = undefined
+      this.$router.push({name:'search',query:this.$route.query})
+      // 通知兄弟组件Header删除关键字
+      this.$bus.$emit('clear')
+    },
+    //绑定自定义事件接收子组件传递过来的品牌数据
+    trademarkInfo(trademark){
+      console.log(trademark.tmName,this.searchParams.keyword,this.searchParams.trademark.split(':')[1]);
+      // 搜索关键字和品牌同名就不用发请求,点相同的品牌不发请求
+      if(trademark.tmName == this.searchParams.keyword ||trademark.tmName==this.searchParams.trademark.split(':')[1]) return
+      //传递品牌参数的格式 trademark: "6:VIVO"
+      this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`
+      
+      
+        this.getSearchList() 
+      
+      
+    },
+    // 删除面包屑的三级分类
+    removeTradeMark(){
+      this.searchParams.trademark = ""
+      this.getSearchList()
+    }
   },
   // 监听组件实例上的属性的属性值变化
   watch: {
     // 监听路由变化
     $route:{
       handler(){
-        // 发送请求之前清空上一次分类id
-        this.searchParams.category1Id = ""
-        this.searchParams.category2Id = ""
-        this.searchParams.category3Id = ""
+        // 发送请求之前清空上一次分类id,默认为undefined的话axios请求不会携带undefined参数
+        this.searchParams.category1Id = undefined
+        this.searchParams.category2Id = undefined
+        this.searchParams.category3Id = undefined
       // 再次在发送请求前整理请求参数
         Object.assign(this.searchParams,this.$route.query,this.$route.params)
         // 再次在发送请求

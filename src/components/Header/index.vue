@@ -60,6 +60,12 @@ export default {
             
         }
     },
+    mounted() {
+        // 事件总线接收清除关键字的通知
+        this.$bus.$on('clear',()=>{
+            this.keyword = undefined
+        })
+    },
 }
 </script>
 

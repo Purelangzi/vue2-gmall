@@ -1,10 +1,14 @@
 <template>
   <div class="clearfix selector">
-    <div class="type-wrap logo">
+    <div class="type-wrap logo" v-show="trademarkList.length!==0">
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
-          <li v-for="trademark in trademarkList" :key="trademark.tmId">{{trademark.tmName}}</li>
+          <li 
+          v-for="trademark in trademarkList" 
+          :key="trademark.tmId"
+          @click="trademarkHandler(trademark)"
+          >{{trademark.tmName}}</li>
         </ul>
       </div>
       <div class="ext">
@@ -30,7 +34,13 @@
 <script>
   export default {
     name: 'SearchSelector',
-    props:['attrsList','trademarkList']
+    props:['attrsList','trademarkList'],
+    methods: {
+      // 绑定自定义事件传递给父组件品牌数据
+      trademarkHandler(trademark){
+        this.$emit('trademarkInfo',trademark)
+      }
+    },
   }
 </script>
 
