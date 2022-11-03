@@ -16,13 +16,21 @@
             <li class="with-x"  v-show="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">x</i></li>
             <!-- 关键字的面包屑 -->
             <li class="with-x"  v-show="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyWord">x</i></li>
-             <!-- 品牌的面包屑 -->
+            <!-- 品牌的面包屑 -->
             <li class="with-x"  v-show="searchParams.trademark">{{searchParams.trademark.split(':')[1]}}<i @click="removeTradeMark">x</i></li>
+            <!-- 售卖属性的面包屑 -->
+            <li class="with-x" 
+            v-for="(attrValue,index) in searchParams.props" 
+            :key="index"
+            >
+            {{attrValue.split(':')[2]}}:{{attrValue.split(':')[1]}}
+              <i @click="removeAttr(attrValue)">x</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector @trademarkInfo="trademarkInfo" :attrsList="attrsList" :trademarkList="trademarkList" />
+        <SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo" :attrsList="attrsList" :trademarkList="trademarkList" />
 
         <!--details-->
         <div class="details clearfix">
@@ -182,6 +190,18 @@ export default {
       // 通知兄弟组件Header删除关键字
       this.$bus.$emit('clear')
     },
+    // 删除面包屑的三级分类
+    removeTradeMark(){
+      this.searchParams.trademark = ""
+      this.getSearchList()
+    },
+    // 删除面包屑的售卖属性
+    removeAttr(attrValue){
+      let index = this.searchParams.props.indexOf(attrValue)
+      // 删除对应的下标
+      this.searchParams.props.splice(index,1)
+      this.getSearchList()
+    },
     //绑定自定义事件接收子组件传递过来的品牌数据
     trademarkInfo(trademark){
       // 点相同的品牌不发请求
@@ -189,14 +209,17 @@ export default {
       //传递品牌参数的格式 trademark: "6:VIVO"
       this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`
       this.getSearchList() 
-      
-      
     },
-    // 删除面包屑的三级分类
-    removeTradeMark(){
-      this.searchParams.trademark = ""
+    //绑定自定义事件接收子组件传递过来的售卖属性数据
+    attrInfo(attrs,attrValue){
+      //传递售卖属性参数的格式 ["106:安卓手机:手机系统", "23:8G:运行内存"]
+      const props = `${attrs.attrId}:${attrValue}:${attrs.attrName}`
+      // 重复点击相同的售卖属性，不发请求
+      if(this.searchParams.props.includes(props)) return
+      this.searchParams.props.push(props)
       this.getSearchList()
-    }
+    },
+    
   },
   // 监听组件实例上的属性的属性值变化
   watch: {
