@@ -95,7 +95,7 @@ export default {
   },
   mounted() {
     
-    if (this.$route.name == "search") this.show = false;
+    if (this.$route.name == "search" || this.$route.name == "detail") this.show = false;
   },
   computed: {
     /* categoryList() {
@@ -136,12 +136,12 @@ export default {
     },
     // 搜索页面下 鼠标进入展示商品分类列表
     enterShow() {
-      if (this.$route.name == "search") this.show = true;
+      if (this.$route.name == "search" || this.$route.name == "detail") this.show = true;
     },
     // 搜索页面下 鼠标离开隐藏商品分类列表
     leaveShow() {
       this.currentIndex = -1;
-      if (this.$route.name == "search") this.show = false;
+      if (this.$route.name == "search" || this.$route.name == "detail") this.show = false;
     },
   },
 };

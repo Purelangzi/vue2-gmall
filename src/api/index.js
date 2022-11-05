@@ -13,8 +13,17 @@ export const reqSearchList = (searchParams) => {
     return request({method:'post',url:'/list',data:searchParams})
 }
 
+// 请求商品详情的数据
+export const reqProductDetail = (productId)=>{
+    return request({method:'get',url:'/item',params:productId})
+}
+
 // 获取模拟的首页banner和floor接口实现轮播图
 export const mockGetBanner = ()=> mockRequest.get('/banner')
 export const mockGetFloor = ()=> mockRequest.get('/floor')
+
+
+
+
 
 // export const mockCategoryList = ()=> mockRequest.get('/categoryList')

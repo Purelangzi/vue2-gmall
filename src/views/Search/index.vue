@@ -52,7 +52,7 @@
             <div class="navbar-inner filter">
               <ul class="sui-nav">
                 <li :class="{ active: isOne }" @click="changeOrder(1)">
-                  <a href="#"
+                  <a href="javascript:void(0)"
                     >综合<span
                       v-show="isOne"
                       :class="['iconfont', isAsc]"
@@ -60,7 +60,7 @@
                   ></a>
                 </li>
                 <li :class="{ active: isTwo }" @click="changeOrder(2)">
-                  <a href="#"
+                  <a href="javascript:void(0)"
                     >价格<span
                       v-show="isTwo"
                       :class="['iconfont', isAsc]"
@@ -76,7 +76,7 @@
               <li class="yui3-u-1-5" v-for="good in goodsList" :key="good.id">
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="#" target="_blank"
+                    <a href="javascript:" @click="goProductDetail(good.id)"
                       ><img :src="good.defaultImg"
                     /></a>
                   </div>
@@ -249,6 +249,15 @@ export default {
       if (page == this.searchParams.pageNo) return;
       this.searchParams.pageNo = page;
       this.getSearchList();
+    },
+    // 编程式导航，跳转到商品详情页
+    goProductDetail(id) {
+      this.$router.push({
+        name: "detail",
+        params: {
+          skuId: id,
+        },
+      });
     },
   },
   // 监听组件实例上的属性的属性值变化

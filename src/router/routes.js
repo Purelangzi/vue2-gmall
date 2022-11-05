@@ -1,5 +1,6 @@
 import Home from '@/views/Home'
 import Search from '@/views/Search'
+import Detail from '@/views/Detail'
 import Login from '@/views/Login'
 import Register from '@/views/Register'
 
@@ -26,6 +27,12 @@ export default [
                 id: query.id
             }
         },
+    },
+    {
+        name:'detail',
+        path:'/detail/:skuId',
+        component:Detail,
+        meta: { show: true },
 
     },
     {

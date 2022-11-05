@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header class="header" id="header">
             <!-- 头部的第一行 -->
             <div class="top">
                 <div class="container">
