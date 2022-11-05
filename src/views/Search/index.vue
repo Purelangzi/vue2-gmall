@@ -107,8 +107,15 @@
               </li>
             </ul>
           </div>
-          <!-- 分页器 -->
-          <Pagination :pageNo="1" :pageSize="3" :total="91" :continues="5" />
+
+          <!-- 分页器 当前页码，每页的条数，总条数，连续的页码数 -->
+          <Pagination
+            :pageNo="searchParams.pageNo"
+            :pageSize="searchParams.pageSize"
+            :total="total"
+            :continues="5"
+            @getPageNo="getPageNo"
+          />
         </div>
       </div>
     </div>
@@ -117,7 +124,7 @@
 
 <script>
 import SearchSelector from "@/views/Search/SearchSelector";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 export default {
   name: "Search",
   data() {
@@ -169,6 +176,10 @@ export default {
         ? "icon-direction-down"
         : "icon-direction-up";
     },
+    // 映射商品的总条数
+    ...mapState({
+      total: (state) => state.search.searchList.total,
+    }),
   },
   methods: {
     getSearchList() {
@@ -220,17 +231,23 @@ export default {
     // 排序操作
     changeOrder(flag) {
       // 当前排序状态
-      let originFlag = this.searchParams.order.split(':')[0]
-      let originSort = this.searchParams.order.split(':')[1]
-      let newOrder = ''
+      let originFlag = this.searchParams.order.split(":")[0];
+      let originSort = this.searchParams.order.split(":")[1];
+      let newOrder = "";
       // 传flag为1的情况点击的是综合（综合默认为降序）(点击的与当前排序状态相同，如点价格但当前排序状态是价格，就变序了)
-      if(flag == originFlag){
-        newOrder = `${originFlag}:${originSort=='desc'?'asc':'desc'}`
-      // 传flag为1的情况点击的是价格（价格默认为降序）(点击的与当前排序状态不同，如点综合但当前排序状态是价格，就默认为降序)
-      }else{
-        newOrder = `${flag}:desc`
+      if (flag == originFlag) {
+        newOrder = `${originFlag}:${originSort == "desc" ? "asc" : "desc"}`;
+        // 传flag为1的情况点击的是价格（价格默认为降序）(点击的与当前排序状态不同，如点综合但当前排序状态是价格，就默认为降序)
+      } else {
+        newOrder = `${flag}:desc`;
       }
-      this.searchParams.order = newOrder
+      this.searchParams.order = newOrder;
+      this.getSearchList();
+    },
+    // 绑定自定义事件接收子组件传递过来的当前页码
+    getPageNo(page) {
+      if (page == this.searchParams.pageNo) return;
+      this.searchParams.pageNo = page;
       this.getSearchList();
     },
   },
