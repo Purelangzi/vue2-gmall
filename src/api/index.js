@@ -14,8 +14,8 @@ export const reqSearchList = (searchParams) => {
 }
 
 // 请求商品详情的数据
-export const reqProductDetail = (productId)=>{
-    return request({method:'get',url:'/item',params:productId})
+export const reqProductDetail = (skuId)=>{
+    return request({method:'get',url:`/item/${ skuId }`})
 }
 
 // 获取模拟的首页banner和floor接口实现轮播图

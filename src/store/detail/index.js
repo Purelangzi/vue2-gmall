@@ -5,11 +5,23 @@ export default {
         productDetailList: {}
     },
     actions: {
-        async getProductDetail({ commit }) {
-            const { data } = await reqProductDetail()
+        async getProductDetail({ commit },params) {
+            const { data } = await reqProductDetail(params)
             if (data.code == 200) {
                 commit('GETPRODUCTDETAIL', data.data)
             }
+        }
+    },
+    // 数据加工（简化数据）
+    getters:{
+        categoryView(state){
+            return state.productDetailList.categoryView || {}
+        },
+        skuInfo(state){
+            return state.productDetailList.skuInfo || {}
+        },
+        spuSaleAttrList(state){
+            return state.productDetailList.spuSaleAttrList || []
         }
     },
     mutations: {
