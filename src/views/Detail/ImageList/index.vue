@@ -2,7 +2,7 @@
   <div class="swiper-container">
     <div class="swiper-wrapper">
       <div class="swiper-slide" v-for="(skuImage,index) in skuImageList" :key="skuImage.id">
-        <img :src="skuImage.imgUrl" :class="{active:currentIndex==index}" @click="changeActive(index)" />
+        <img :src="skuImage.imgUrl" :class="{active:currentIndex==index}" @click="changeActive(index,skuImage.imgUrl)" />
       </div>
     </div>
     <div class="swiper-button-next"></div>
@@ -40,10 +40,11 @@ export default {
     },
   },
   methods: {
-    changeActive(index){
+    changeActive(index,imgUrl){
       this.currentIndex = index
       // 事件总线通知兄弟组件，传递当前点击的索引值
       this.$bus.$emit('getSkuImageIndex',index)
+      this.$bus.$emit('shopCart',imgUrl)
     }
   },
 };

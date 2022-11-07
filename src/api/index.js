@@ -17,7 +17,11 @@ export const reqSearchList = (searchParams) => {
 export const reqProductDetail = (skuId)=>{
     return request({method:'get',url:`/item/${ skuId }`})
 }
-
+// /api/cart/addToCart/{ skuId }/{ skuNum }
+// 将产品添加到购物车（获取更新某一个产品的个数）
+export const reqAddOrUpdateShopCart = (skuId,skuNum)=>{
+    return request({method:'post',url:`/cart/addToCart/${skuId}/${skuNum}`})
+}
 // 获取模拟的首页banner和floor接口实现轮播图
 export const mockGetBanner = ()=> mockRequest.get('/banner')
 export const mockGetFloor = ()=> mockRequest.get('/floor')

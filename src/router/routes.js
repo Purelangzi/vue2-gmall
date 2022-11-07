@@ -3,6 +3,8 @@ import Search from '@/views/Search'
 import Detail from '@/views/Detail'
 import Login from '@/views/Login'
 import Register from '@/views/Register'
+import AddCartSuccess from '@/views/AddCartSuccess'
+
 
 export default [
     // 重定向到首页
@@ -32,6 +34,13 @@ export default [
         name:'detail',
         path:'/detail/:skuId',
         component:Detail,
+        meta: { show: true },
+
+    },
+    {
+        name:'addcartsuccess',
+        path:'/addcartsuccess',
+        component:AddCartSuccess,
         meta: { show: true },
 
     },
