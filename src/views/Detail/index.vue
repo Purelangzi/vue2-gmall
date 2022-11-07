@@ -343,9 +343,9 @@ import { mapGetters } from 'vuex'
     },
     computed: {
       ...mapGetters('detail',['categoryView','skuInfo','spuSaleAttrList']),
-      // 防止子组件接收到的props为undefined，从而报错
+      // 请求是异步的，防止子组件接收到的props为undefined，从而报错
       skuImageList(){
-        return this.skuInfo.skuImageList || [{}]
+        return this.skuInfo.skuImageList ||[{}]
       }
     },
     mounted() {

@@ -20,7 +20,7 @@ export default {
   },
   mounted() {
     this.$bus.$on("getSkuImageIndex", (index) => {
-      this.currentIndexx = index;
+      this.currentIndex = index;
     });
   },
   methods: {
