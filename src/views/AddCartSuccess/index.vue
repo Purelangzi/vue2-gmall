@@ -5,16 +5,22 @@
       <div class="goods">
         <div class="left-good">
           <div class="left-pic">
-            <img :src="imgUrl || skuInfo.skuDefaultImg">
+            <img :src="skuInfo.skuImageUrl || skuInfo.skuDefaultImg">
           </div>
           <div class="right-info">
             <p class="title">{{skuInfo.skuName}}</p>
-            <p class="attr">{{skuInfo.skuDesc}} 数量：{{$route.query.skuNum}}</p>
+            <p class="attr">
+              <span>{{skuInfo.saleAttr1ValueName}}：{{skuInfo.saleAttr1Value}}</span>
+              <br>
+              <span>{{skuInfo.saleAttr2ValueName}}：{{skuInfo.saleAttr2Value}}</span>
+              <br>
+              数量：{{$route.query.skuNum}}
+            </p>
           </div>
         </div>
         <div class="right-gocart">
-          <a href="javascript:" class="sui-btn btn-xlarge">查看商品详情</a>
-          <a href="javascript:" >去购物车结算 > </a>
+          <router-link :to="`/detail/${skuInfo.id}`"  class="sui-btn btn-xlarge">查看商品详情</router-link>
+          <router-link to="/shopcart" >去购物车结算 > </router-link>
         </div>
       </div>
     </div>
@@ -25,11 +31,9 @@
   export default {
     name: 'AddCartSuccess',
     computed:{
+      // 添加进购物车的产品信息
       skuInfo(){
         return JSON.parse(sessionStorage.getItem('SKUINFO'))
-      },
-      imgUrl(){
-        return JSON.parse(sessionStorage.getItem('IMGURL'))
       }
     }
   }

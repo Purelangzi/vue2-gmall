@@ -1,8 +1,11 @@
 import { reqProductDetail,reqAddOrUpdateShopCart } from '@/api'
+// 封装游客身份模块uuid，生成一个随机字符串（不会变）
+import {getUUID} from '@/utils/uuid_token'
 export default {
     namespaced: true,
     state: {
-        productDetailList: {}
+        productDetailList: {},
+        uuid_token :getUUID()
     },
     actions: {
         // 获取产品详情

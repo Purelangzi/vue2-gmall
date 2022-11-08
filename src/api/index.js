@@ -13,7 +13,7 @@ export const reqSearchList = (searchParams) => {
     return request({method:'post',url:'/list',data:searchParams})
 }
 
-// 请求商品详情的数据
+// 请求商品详情的数据 /api/item/{ skuId }
 export const reqProductDetail = (skuId)=>{
     return request({method:'get',url:`/item/${ skuId }`})
 }
@@ -22,6 +22,12 @@ export const reqProductDetail = (skuId)=>{
 export const reqAddOrUpdateShopCart = (skuId,skuNum)=>{
     return request({method:'post',url:`/cart/addToCart/${skuId}/${skuNum}`})
 }
+
+// 获取购物车列表 /api/cart/cartList
+export const reqCartList = ()=>{
+    return request.get('/cart/cartList')
+}
+
 // 获取模拟的首页banner和floor接口实现轮播图
 export const mockGetBanner = ()=> mockRequest.get('/banner')
 export const mockGetFloor = ()=> mockRequest.get('/floor')

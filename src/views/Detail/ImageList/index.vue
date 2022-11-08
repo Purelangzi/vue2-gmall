@@ -40,11 +40,12 @@ export default {
     },
   },
   methods: {
-    changeActive(index,imgUrl){
+    changeActive(index,skuImage){
       this.currentIndex = index
       // 事件总线通知兄弟组件，传递当前点击的索引值
       this.$bus.$emit('getSkuImageIndex',index)
-      this.$bus.$emit('shopCart',imgUrl)
+      // 自定义事件传递父组件当前点击的图片地址
+      this.$emit('getImgUrl',skuImage)
     }
   },
 };

@@ -7,15 +7,15 @@
     <section class="con">
       <!-- 导航路径区域 -->
       <div class="conPoin">
-        <span v-show="categoryView.category1Id">{{
-          categoryView.category1Name
-        }}</span>
-        <span v-show="categoryView.category2Id">{{
-          categoryView.category2Name
-        }}</span>
-        <span v-show="categoryView.category3Id">{{
-          categoryView.category3Name
-        }}</span>
+        <span v-show="categoryView.category1Id">
+          {{ categoryView.category1Name }}
+        </span>
+        <span v-show="categoryView.category2Id">
+          {{ categoryView.category2Name }}</span
+        >
+        <span v-show="categoryView.category3Id">
+          {{ categoryView.category3Name }}</span
+        >
       </div>
       <!-- 主要内容区域 -->
       <div class="mainCon">
@@ -24,7 +24,7 @@
           <!--放大镜效果-->
           <Zoom :skuImageList="skuImageList" />
           <!-- 小图列表 -->
-          <ImageList :skuImageList="skuImageList" />
+          <ImageList :skuImageList="skuImageList" @getImgUrl="getImgUrl" />
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
@@ -84,12 +84,7 @@
                   :class="{ active: spuSaleAttrValue.isChecked == 1 }"
                   v-for="spuSaleAttrValue in spuSaleAttr.spuSaleAttrValueList"
                   :key="spuSaleAttrValue.id"
-                  @click="
-                    changeActive(
-                      spuSaleAttrValue,
-                      spuSaleAttr.spuSaleAttrValueList
-                    )
-                  "
+                  @click="changeActive(spuSaleAttrValue, spuSaleAttr.spuSaleAttrValueList)"
                 >
                   {{ spuSaleAttrValue.saleAttrValueName }}
                 </dd>
@@ -107,7 +102,7 @@
                 <a
                   href="javascript:"
                   class="mins"
-                  @click="skuNum < 1 ? (skuNum = 1) : skuNum--"
+                  @click="skuNum < 2 ? (skuNum = 1) : skuNum--"
                   >-</a
                 >
               </div>
@@ -360,7 +355,17 @@ export default {
   data() {
     return {
       skuNum: 1,
-      
+      //加入购物车商品的数据
+      shopInfo: {
+        id:'',
+        skuName: "",
+        skuDefaultImg: "",
+        skuImageUrl: "",
+        saleAttr1ValueName: "颜色",
+        saleAttr1Value: "陶瓷黑",
+        saleAttr2ValueName: "版本",
+        saleAttr2Value: "16G+256G",
+      },
     };
   },
   components: {
@@ -385,6 +390,18 @@ export default {
         ele.isChecked = "0";
       });
       sav.isChecked = "1";
+
+      //存储当前点击的售卖属性和属性值
+      this.shopInfo.saleAttr1ValueName = this.spuSaleAttrList[0].saleAttrName;
+      this.shopInfo.saleAttr2ValueName = this.spuSaleAttrList[1].saleAttrName;
+      this.spuSaleAttrList[0].spuSaleAttrValueList.forEach((ele) => {
+        if (ele.isChecked == "1")
+          this.shopInfo.saleAttr1Value = ele.saleAttrValueName;
+      });
+      this.spuSaleAttrList[1].spuSaleAttrValueList.forEach((ele) => {
+        if (ele.isChecked == "1")
+          this.shopInfo.saleAttr2Value = ele.saleAttrValueName;
+      });
     },
     // 表单元素修改产品个数
     changeSkuNum(event) {
@@ -394,6 +411,10 @@ export default {
       } else {
         this.skuNum = parseInt(value);
       }
+    },
+    // 自定义事件接收子组件传递过来的图片地址
+    getImgUrl(skuImage) {
+      this.shopInfo.skuImageUrl = skuImage;
     },
     // 加入购物车
     async addShopCart() {
@@ -406,24 +427,22 @@ export default {
         });
         // 路由跳转,还需要把产品信息带给下一级的路由组件
         // 不用路由传参传递产品信息，地址栏难看，用会话存储
-        this.$bus.$on('shopCart',(imgUrl)=>{
-          console.log(imgUrl);
-          sessionStorage.setItem('IMGURL',JSON.stringify(imgUrl))
-        })
-        
-        sessionStorage.setItem('SKUINFO',JSON.stringify(this.skuInfo))
+        this.shopInfo.id = this.skuInfo.id
+        this.shopInfo.skuName = this.skuInfo.skuName;
+        this.shopInfo.skuDefaultImg = this.skuInfo.skuDefaultImg;
+        // 使用会话存储加入购物车产品的数据
+        sessionStorage.setItem("SKUINFO", JSON.stringify(this.shopInfo));
+        // 2.服务器存储成功，进行路由跳转参数
         this.$router.push({
-          name:'addcartsuccess',
-          query:{
+          name: "addcartsuccess",
+          query: {
             skuNum: this.skuNum,
-          }
-        })
+          },
+        });
       } catch (error) {
-        alert(error.message)
+        // 3.失败，提示用户
+        alert(error.message);
       }
-
-      // 2.服务器存储成功，进行路由跳转参数
-      // 3.失败，提示用户
     },
   },
 };

@@ -52,7 +52,7 @@
             <div class="navbar-inner filter">
               <ul class="sui-nav">
                 <li :class="{ active: isOne }" @click="changeOrder(1)">
-                  <a href="javascript:void(0)"
+                  <a 
                     >综合<span
                       v-show="isOne"
                       :class="['iconfont', isAsc]"
@@ -60,7 +60,7 @@
                   ></a>
                 </li>
                 <li :class="{ active: isTwo }" @click="changeOrder(2)">
-                  <a href="javascript:void(0)"
+                  <a 
                     >价格<span
                       v-show="isTwo"
                       :class="['iconfont', isAsc]"
