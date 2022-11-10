@@ -11,7 +11,7 @@ import store from '@/store'
 const request = axios.create({
     // 基础地址
     baseURL: '/api',
-    timeout:3000
+    timeout:10000
 })
 
 // 添加请求拦截器

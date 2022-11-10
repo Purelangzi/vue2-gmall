@@ -27,7 +27,14 @@ export const reqAddOrUpdateShopCart = (skuId,skuNum)=>{
 export const reqCartList = ()=>{
     return request.get('/cart/cartList')
 }
-
+// 删除购物车产品  /api/cart/deleteCart/{skuId}
+export const reqDeleteCartById = (skuId)=>{
+    return request.delete(`/cart/deleteCart/${skuId}`)
+}
+// 修改商品的选中状态 /api/cart/checkCart/{skuId}/{isChecked}
+export const reqUpdateCheckedById = (skuId,isChecked)=>{
+    return request.get(`/cart/checkCart/${skuId}/${isChecked}`)
+}
 // 获取模拟的首页banner和floor接口实现轮播图
 export const mockGetBanner = ()=> mockRequest.get('/banner')
 export const mockGetFloor = ()=> mockRequest.get('/floor')
