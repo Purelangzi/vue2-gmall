@@ -21,6 +21,13 @@ request.interceptors.request.use(function (config) {
     if(store.state.detail.uuid_token){
         config.headers.userTempId = store.state.detail.uuid_token
     }
+    // 携带token带给服务器
+    /* if(localStorage.getItem('userToken')){
+        config.headers.token = JSON.parse(localStorage.getItem('userToken'))
+    } */
+    if(store.state.user.token){
+        config.headers.token = store.state.user.token
+    }
 
     // 进度条开始
     nProgress.start()

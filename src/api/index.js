@@ -35,6 +35,23 @@ export const reqDeleteCartById = (skuId)=>{
 export const reqUpdateCheckedById = (skuId,isChecked)=>{
     return request.get(`/cart/checkCart/${skuId}/${isChecked}`)
 }
+// 获取验证码 /api/user/passport/sendCode/{phone} 
+export const reqGetCode = (phone)=>{
+    return request.get(`/user/passport/sendCode/${phone}`)
+}
+// 注册用户 /api/user/passport/register
+export const reqUserRegister = (data) =>{
+    return request({method:'post',url:'/user/passport/register',data})
+}
+// 用户登陆 /api/user/passport/login
+export const reqUserLogin = (data) =>{
+    return request({method:'post',url:'/user/passport/login',data})
+}
+// 获取用户登陆信息 /api/user/passport/auth/getUserInfo
+export const reqUserInfo = () =>{
+    return request({method:'get',url:'/user/passport/auth/getUserInfo'})
+}
+
 // 获取模拟的首页banner和floor接口实现轮播图
 export const mockGetBanner = ()=> mockRequest.get('/banner')
 export const mockGetFloor = ()=> mockRequest.get('/floor')

@@ -5,7 +5,10 @@
                 <div class="container">
                     <div class="loginList">
                         <p>尚品汇欢迎您！</p>
-                        <p>
+                        <p v-if="userName">
+                            <span>{{userName}}<button @click="logOut">退出登陆</button> </span>
+                        </p>
+                        <p v-else>
                             <span>请</span>
                             <router-link to="/login">登陆</router-link>
                             <router-link to="/register" class="register">免费注册</router-link>
@@ -49,6 +52,7 @@ export default {
         }
     },
     methods: {
+        // 关键字搜索
         goSearch(){
             this.$router.push({
                 name:'search',
@@ -57,14 +61,27 @@ export default {
                 },
                 query:this.$route.query
             })
-            
+        },
+        logOut(){
+            localStorage.removeItem('user')
+            try {
+                this.$store.dispatch('user/userLogout')
+                this.$router.push('/login')
+            } catch (error) {
+                alert(error.message)
+            }
+        }
+    },
+    computed:{
+        userName(){
+            return this.$store.state.user.userInfo.loginName
         }
     },
     mounted() {
         // 事件总线接收清除关键字的通知
         this.$bus.$on('clear',()=>{
             this.keyword = undefined
-        })
+        });
     },
 }
 </script>
