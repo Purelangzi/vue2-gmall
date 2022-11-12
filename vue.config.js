@@ -7,6 +7,7 @@ module.exports = defineConfig({
     proxy:{
       '/api':{
         target:'http://gmall-h5-api.atguigu.cn',//后台接口域名
+        // target:'http://47.93.148.192/' // 备用
         
       }
     }
