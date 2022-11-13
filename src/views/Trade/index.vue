@@ -83,7 +83,7 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <a class="subBtn" @click="SubmitOrder">提交订单</a>
     </div>
   </div>
 </template>
@@ -94,7 +94,8 @@ import { mapState } from 'vuex'
     name: 'Trade',
     data() {
       return {
-        orderComment:''
+        orderComment:'',
+        orderId:''
       }
     },
     mounted(){
@@ -103,7 +104,7 @@ import { mapState } from 'vuex'
     },
     computed: {
       // 映射用户地址信息和商品清单列表
-      ...mapState('trade',['addressInfo','orderInfo']),
+      ...mapState('trade',['addressInfo','orderInfo','payId']),
       // 将来提交订单最终选中的地址
       userDefaultAddress(){
         // find方法遍历数组中第一个符合条件的元素，并将元素返回为最终结果
@@ -116,6 +117,35 @@ import { mapState } from 'vuex'
       changeDefault(address,addressInfo){
         addressInfo.forEach(ele => ele.isDefault = '0');
         address.isDefault = '1'
+      },
+      // 提交订单
+      async SubmitOrder(){
+        // 交易编号
+        const {tradeNo} = this.orderInfo
+        // 整理订单参数
+        const {consignee,phoneNum,fullAddress} = this.userDefaultAddress
+        const orderData = {
+          consignee,// 最终的收件人姓名
+          consigneeTel:phoneNum,// 最终的收件人手机号
+          deliveryAddress:fullAddress,// 最终的收件地址
+          paymentWay:'ONLINE',// 支付方式
+          orderComment:this.orderComment,//买家留言信息
+          orderDetailList:this.orderInfo.detailArrayList //商品清单
+        }
+        // 请求提交订单
+        const {data} =  await this.$API.reqSubmitOrder(tradeNo,orderData)
+        if(data.code == 200){
+          this.orderId = data.data
+          this.$router.push({
+            path:'/pay',
+            query:{
+              orderId:this.orderId
+            }
+          })
+        }else{
+          alert(data.message)
+        }
+
       }
     },
   }
@@ -367,7 +397,7 @@ import { mapState } from 'vuex'
         text-align: center;
         color: #fff;
         background-color: #e1251b;
-
+        cursor: pointer;
       }
     }
 

@@ -67,6 +67,21 @@ export const reqAddressInfo = () =>{
 export const reqOrderInfo = () =>{
     return request.get('/order/auth/trade')
 }
+// 提交订单 /api/order/auth/submitOrder?tradeNo={tradeNo}
+export const reqSubmitOrder = (tradeNo,data) =>{
+    return request({method:'post',url:`/order/auth/submitOrder?tradeNo=${tradeNo}`,data})
+}
+
+
+// 获取订单支付信息  /api/payment/weixin/createNative/{orderId}
+export const reqPayInfo = (orderId) =>{
+    return request({method:'get',url:`/payment/weixin/createNative/${orderId}`})
+}
+
+// 查询支付订单状态/api/payment/weixin/queryPayStatus/{orderId}
+export const reqPayStatus = (orderId) =>{
+    return request({method:'get',url:`/payment/weixin/queryPayStatus/${orderId}`})
+}
 
 // 获取模拟的首页banner和floor接口实现轮播图
 export const mockGetBanner = ()=> mockRequest.get('/banner')

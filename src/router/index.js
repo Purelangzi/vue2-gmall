@@ -20,7 +20,7 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   routes,
   scrollBehavior(to) {
-    if (to.name == 'detail') {
+    if (to.name == 'detail'||to.path == '/pay') {
       return { x: 0, y: 0 }
     }
     // return 期望滚动到哪个的位置
@@ -48,9 +48,9 @@ router.beforeEach(async(to, from, next) => {
       }
     }
   } else {
-    // 未登陆则不能去需要token的页面（订单交易页）
+    // 未登陆则不能去需要token的页面（订单交易页,支付页）
     if (isToken){
-      next('/')
+      next('/login')
     }else{
       // 不需要token的页面，放行
       next()

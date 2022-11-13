@@ -6,6 +6,9 @@ import Register from '@/views/Register'
 import AddCartSuccess from '@/views/AddCartSuccess'
 import ShopCart from '@/views/ShopCart'
 import Trade from '@/views/Trade'
+import Pay from '@/views/Pay'
+import PaySuccess from '@/views/PaySuccess'
+import Center from '@/views/Center'
 
 export default [
     // 重定向到首页
@@ -68,6 +71,21 @@ export default [
     {
         path: '/trade',
         component: Trade,
+        meta: { show: true,isToken:true }
+    },
+    {
+        path: '/pay',
+        component: Pay,
+        meta: { show: true,isToken:true }
+    },
+    {
+        path: '/paysuccess',
+        component: PaySuccess,
+        meta: { show: true,isToken:true }
+    },
+    {
+        path: '/center',
+        component: Center,
         meta: { show: true,isToken:true }
     },
 ]

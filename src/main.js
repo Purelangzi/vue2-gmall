@@ -16,6 +16,12 @@ import 'swiper/css/swiper.min.css'
 
 // 引入图标样式
 import '@/assets/font/iconfont.css'
+// 统一导入接口对象
+import * as API from '@/api'
+
+import { Button, MessageBox,Message} from 'element-ui';
+
+
 Vue.config.productionTip = false
 
 // 注册全局组件
@@ -25,11 +31,19 @@ Vue.component(Pagination.name, Pagination)
 
 
 
+Vue.use(Button)
+
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
+Vue.prototype.$message = Message;
 new Vue({
   router,
   store,
   render: h => h(App),
-  beforeCreate(){
-   Vue.prototype.$bus = this 
+  beforeCreate() {
+    // 全局事件总线
+    Vue.prototype.$bus = this
+    // 接口对象挂载到原型上
+    Vue.prototype.$API = API
   }
 }).$mount('#app')
