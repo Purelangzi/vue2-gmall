@@ -50,8 +50,7 @@ export default [
         name:'shopcart',
         path:'/shopcart',
         component:ShopCart,
-        
-        meta: { show: true,isToken:true },
+        meta: { show: true,isToken:false },
     },
     {
         path: '/login',

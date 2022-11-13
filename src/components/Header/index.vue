@@ -6,7 +6,8 @@
                     <div class="loginList">
                         <p>尚品汇欢迎您！</p>
                         <p v-if="userName">
-                            <span>{{userName}}<button @click="logOut">退出登陆</button> </span>
+                            <span>{{userName}}</span>
+                            <button @click="logOut">退出登陆</button> 
                         </p>
                         <p v-else>
                             <span>请</span>

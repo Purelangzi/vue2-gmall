@@ -25,17 +25,6 @@ export default {
   components: { ListContainer, Recommend, Rank, Like, Floor, Brand},
   mounted() {
     this.$store.dispatch("home/getFloorList");
-    this.getUserInfo()
-  },
-  methods: {
-    // 派发action获取用户信息
-    async getUserInfo(){
-      try {
-        await this.$store.dispatch("user/getUserInfo");
-      }catch(error){
-        console.log(error.message);
-      }
-    }
   },
   computed: {
     ...mapState({

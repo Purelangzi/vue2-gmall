@@ -48,15 +48,9 @@ router.beforeEach(async(to, from, next) => {
       }
     }
   } else {
-    // 未登陆则不能去需要token的页面（购物车，订单交易页）
+    // 未登陆则不能去需要token的页面（订单交易页）
     if (isToken){
-      // 如果有游客身份则可以去购物车,否则一律跳转到登陆页
-      if(!store.state.detail.uuid_token){ 
-        next('/login')
-      }else{
-        // 有游客身份不能跳转订单交易页,其它需要token的页面可以跳转
-        to.path == '/trade'?next('/login'):next()
-      }
+      next('/')
     }else{
       // 不需要token的页面，放行
       next()

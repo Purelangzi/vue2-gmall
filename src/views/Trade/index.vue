@@ -74,7 +74,7 @@
       </ul>
     </div>
     <div class="trade">
-      <div class="price">应付金额:　<span>¥{{orderInfo.totalAmount}}</span></div>
+      <div class="price">应付金额：<span>¥{{orderInfo.totalAmount}}</span></div>
       <div class="receiveInfo">
         寄送至:
         <span>{{userDefaultAddress.fullAddress}}</span>
