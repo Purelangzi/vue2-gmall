@@ -131,7 +131,7 @@ export default {
             done()
           }else{
             // 开后门
-            // if(this.payStatus == 205){
+            // if(this.payStatus == 200){
               clearInterval(this.timer)
               this.timer = null
               done()
@@ -147,6 +147,7 @@ export default {
           const {data} = await this.$API.reqPayStatus(this.orderId)
           if(data.code ==200){
             this.payStatus = data.code
+            clearInterval(this.timer)
             this.timer = null
             // 关闭弹出框
             this.$msgbox.close()

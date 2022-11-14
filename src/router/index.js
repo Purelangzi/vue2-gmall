@@ -32,7 +32,8 @@ router.beforeEach(async(to, from, next) => {
   let isToken = to.meta.isToken
   // 用户已登陆不能回到登陆页和注册页
   if (token) {
-    if (to.path == '/login'|| to.path == '/register') next('/home')
+    if (to.path == '/login'|| to.path == '/register') next('/')
+    
     // 如果用户名存在
     if(name){
       next()
@@ -42,15 +43,40 @@ router.beforeEach(async(to, from, next) => {
         await store.dispatch('user/getUserInfo')
         next()
       } catch (error) {
+        Vue.prototype.$message({
+          message:'token已过期，请重新登陆',
+          type:'warning',
+          duration:2000
+        })
         // token失效(后端设置token失效时间),清除仓库和本地存储的token,重新登陆
         await store.dispatch('user/userLogout')
         next('/login')
       }
     }
+/*     // 没有订单号且不是通过交易页面是不能进入订单支付页面和支付成功页面的
+    if(to.path == '/pay'){
+      if(from.path=='/trade'&&to.query.orderId){
+        next()
+      }else{
+        Vue.prototype.$message({
+          message:'没提交订单不能进入哦',
+          type:'error',
+          duration:2000
+        })
+        next('/')
+      }
+    } */
+    
   } else {
-    // 未登陆则不能去需要token的页面（订单交易页,支付页）
+    // 未登陆则不能去需要token的页面（订单交易页,支付页,支付成功页和个人中心页）
     if (isToken){
-      next('/login')
+      Vue.prototype.$message({
+        message:'请登陆',
+        type:'warning',
+        duration:2000
+      })
+      // 未登陆想去的页面存放在地址栏中(路由中)
+      next(`/login?redirect=${to.path}`)
     }else{
       // 不需要token的页面，放行
       next()

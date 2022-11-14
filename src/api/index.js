@@ -83,6 +83,14 @@ export const reqPayStatus = (orderId) =>{
     return request({method:'get',url:`/payment/weixin/queryPayStatus/${orderId}`})
 }
 
+// 获取个人中心的数据 /api/order/auth/{page}/{limit}
+export const reqMyOrder = (page,limit) =>{
+    return request({method:'get',url:`/order/auth/${page}/${limit}`})
+}
+
+
+
+
 // 获取模拟的首页banner和floor接口实现轮播图
 export const mockGetBanner = ()=> mockRequest.get('/banner')
 export const mockGetFloor = ()=> mockRequest.get('/floor')

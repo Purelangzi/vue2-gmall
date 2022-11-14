@@ -81,7 +81,10 @@
         if(!phone&&!password) return
         try {
           await this.$store.dispatch('user/userLogin',{phone,password})
-          this.$router.push('/home')
+          // 登陆后立即跳转到登陆前没去成的页面
+          const toPath = this.$route.query.redirect||"/"
+          this.$router.push(toPath)
+          
         } catch (error) {
           alert(error.message)
         }

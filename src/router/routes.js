@@ -9,7 +9,9 @@ import Trade from '@/views/Trade'
 import Pay from '@/views/Pay'
 import PaySuccess from '@/views/PaySuccess'
 import Center from '@/views/Center'
-
+import MyOrder from '@/views/Center/myOrder'
+import GroupOrder from '@/views/Center/groupOrder'
+import Vue from "vue";
 export default [
     // 重定向到首页
     {
@@ -71,22 +73,78 @@ export default [
     {
         path: '/trade',
         component: Trade,
-        meta: { show: true,isToken:true }
+        meta: { show: true,isToken:true },
+        // 路由独享的守卫，只有从购物车页面才能跳到交易页面
+        beforeEnter: (to, from, next) => {
+            // 因为一刷新就是从/跳转到shopcart，
+            if(from.path == '/shopcart' || from.path =='/'){
+                next()
+            }else{
+                Vue.prototype.$message({
+                  message:'没购物不能进入交易哦',
+                  type:'warning',
+                  duration:2000
+                })
+                next('/')
+            }
+        }
     },
     {
         path: '/pay',
         component: Pay,
-        meta: { show: true,isToken:true }
+        meta: { show: true,isToken:true },
+        beforeEnter: (to, from, next) => {
+            // 没有订单号不能去支付页面
+            if(from.path == '/trade'&&to.query.orderId || from.path =='/'&&to.query.orderId){
+                next()
+            }else{
+                Vue.prototype.$message({
+                  message:'没提交订单不能进入支付哦',
+                  type:'warning',
+                  duration:2000
+                })
+                next('/')
+            }
+        }
     },
     {
         path: '/paysuccess',
         component: PaySuccess,
-        meta: { show: true,isToken:true }
+        meta: { show: true,isToken:true },
+        beforeEnter: (to, from, next) => {
+            // 没有订单号不能去支付页面
+            if(from.path == '/pay' || from.path =='/'){
+                next()
+            }else{
+                Vue.prototype.$message({
+                  message:'还没支付呢',
+                  type:'warning',
+                  duration:2000
+                })
+                next('/')
+            }
+        }
     },
     {
         path: '/center',
         component: Center,
-        meta: { show: true,isToken:true }
+        meta: { show: true,isToken:true },
+        children:[
+            {
+                path:'/',
+                redirect:'myorder'
+            },
+            {
+                path:'myorder',
+                component:MyOrder,
+                meta: { show: true,isToken:true },
+            },
+            {
+                path:'grouporder',
+                component:GroupOrder,
+                meta: { show: true,isToken:true },
+            }
+        ]
     },
 ]
 
