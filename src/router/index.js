@@ -53,19 +53,6 @@ router.beforeEach(async(to, from, next) => {
         next('/login')
       }
     }
-/*     // 没有订单号且不是通过交易页面是不能进入订单支付页面和支付成功页面的
-    if(to.path == '/pay'){
-      if(from.path=='/trade'&&to.query.orderId){
-        next()
-      }else{
-        Vue.prototype.$message({
-          message:'没提交订单不能进入哦',
-          type:'error',
-          duration:2000
-        })
-        next('/')
-      }
-    } */
     
   } else {
     // 未登陆则不能去需要token的页面（订单交易页,支付页,支付成功页和个人中心页）

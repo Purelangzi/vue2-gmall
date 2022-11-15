@@ -81,11 +81,11 @@ export default [
                 next()
             }else{
                 Vue.prototype.$message({
-                  message:'没购物不能进入交易哦',
+                  message:'请从购物车页面进入交易页面',
                   type:'warning',
                   duration:2000
                 })
-                next('/')
+                next(false)
             }
         }
     },
@@ -99,11 +99,11 @@ export default [
                 next()
             }else{
                 Vue.prototype.$message({
-                  message:'没提交订单不能进入支付哦',
+                  message:'请从交易页面进入订单支付页面',
                   type:'warning',
                   duration:2000
                 })
-                next('/')
+                next(false)
             }
         }
     },
@@ -114,14 +114,19 @@ export default [
         beforeEnter: (to, from, next) => {
             // 没有订单号不能去支付页面
             if(from.path == '/pay' || from.path =='/'){
+                Vue.prototype.$message({
+                  message:'支付成功',
+                  type:'success',
+                  duration:2000
+                })
                 next()
             }else{
                 Vue.prototype.$message({
-                  message:'还没支付呢',
+                  message:'请从支付页面进入支付成功页面',
                   type:'warning',
                   duration:2000
                 })
-                next('/')
+                next(false)
             }
         }
     },
