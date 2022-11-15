@@ -77,7 +77,7 @@
                 <div class="list-wrap">
                   <div class="p-img">
                     <a href="javascript:" @click="goProductDetail(good.id)"
-                      ><img :src="good.defaultImg"
+                      ><img v-lazy="good.defaultImg"
                     /></a>
                   </div>
                   <div class="price">

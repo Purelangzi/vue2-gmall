@@ -1,16 +1,3 @@
-import Home from '@/views/Home'
-import Search from '@/views/Search'
-import Detail from '@/views/Detail'
-import Login from '@/views/Login'
-import Register from '@/views/Register'
-import AddCartSuccess from '@/views/AddCartSuccess'
-import ShopCart from '@/views/ShopCart'
-import Trade from '@/views/Trade'
-import Pay from '@/views/Pay'
-import PaySuccess from '@/views/PaySuccess'
-import Center from '@/views/Center'
-import MyOrder from '@/views/Center/myOrder'
-import GroupOrder from '@/views/Center/groupOrder'
 import Vue from "vue";
 export default [
     // 重定向到首页
@@ -20,7 +7,7 @@ export default [
     },
     {
         path: '/home',
-        component: Home,
+        component: ()=>import('@/views/Home'),
         //路由元信息,控制当前路由是否需要Footer组件以及是否需要token才能访问
         meta: { show: true,isToken:false }
 
@@ -28,7 +15,7 @@ export default [
     {
         name: 'search',
         path: '/search/:keyword?',
-        component: Search,
+        component: ()=> import('@/views/Search'),
         meta: { show: true },
         props({ params, query }) {
             return {
@@ -40,39 +27,38 @@ export default [
     {
         name:'detail',
         path:'/detail/:skuId',
-        component:Detail,
+        component:()=>import('@/views/Detail'),
         meta: { show: true,isToken:false },
 
     },
     {
         name:'addcartsuccess',
         path:'/addcartsuccess',
-        component:AddCartSuccess,
+        component:()=>import('@/views/AddCartSuccess'),
         meta: { show: true,isToken:false },
 
     },
     {
         name:'shopcart',
         path:'/shopcart',
-        component:ShopCart,
+        component:()=>import('@/views/ShopCart'),
         meta: { show: true,isToken:false },
     },
     {
         path: '/login',
-        component: Login,
-        
+        component:()=>import('@/views/Login'),
         meta: { show: false,isToken:false }
     },
     
     {
         path: '/register',
-        component: Register,
+        component:()=>import('@/views/Register'),
         meta: { show: false,isToken:false }
 
     },
     {
         path: '/trade',
-        component: Trade,
+        component:()=>import('@/views/Trade'),
         meta: { show: true,isToken:true },
         // 路由独享的守卫，只有从购物车页面才能跳到交易页面
         beforeEnter: (to, from, next) => {
@@ -91,7 +77,7 @@ export default [
     },
     {
         path: '/pay',
-        component: Pay,
+        component:()=>import('@/views/Pay'),
         meta: { show: true,isToken:true },
         beforeEnter: (to, from, next) => {
             // 没有订单号不能去支付页面
@@ -109,7 +95,7 @@ export default [
     },
     {
         path: '/paysuccess',
-        component: PaySuccess,
+        component:()=>import('@/views/PaySuccess'),
         meta: { show: true,isToken:true },
         beforeEnter: (to, from, next) => {
             // 没有订单号不能去支付页面
@@ -132,7 +118,7 @@ export default [
     },
     {
         path: '/center',
-        component: Center,
+        component:()=>import('@/views/Center'),
         meta: { show: true,isToken:true },
         children:[
             {
@@ -141,12 +127,12 @@ export default [
             },
             {
                 path:'myorder',
-                component:MyOrder,
+                component:()=>import('@/views/Center/myOrder'),
                 meta: { show: true,isToken:true },
             },
             {
                 path:'grouporder',
-                component:GroupOrder,
+                component:()=>import('@/views/Center/groupOrder'),
                 meta: { show: true,isToken:true },
             }
         ]

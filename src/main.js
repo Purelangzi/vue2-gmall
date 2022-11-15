@@ -18,10 +18,13 @@ import 'swiper/css/swiper.min.css'
 import '@/assets/font/iconfont.css'
 // 统一导入接口对象
 import * as API from '@/api'
+import ic from '@/assets/images/icons.png'
 
-import { Button, MessageBox,Message} from 'element-ui';
-
-
+import { Button, MessageBox,Message,Form,Input,FormItem,Checkbox} from 'element-ui';
+import VueLazyload from 'vue-lazyload'
+Vue.use(VueLazyload, {
+  loading: ic,
+})
 Vue.config.productionTip = false
 
 // 注册全局组件
@@ -32,6 +35,10 @@ Vue.component(Pagination.name, Pagination)
 
 
 Vue.use(Button)
+Vue.use(Form)
+Vue.use(Input)
+Vue.use(FormItem)
+Vue.use(Checkbox)
 
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
