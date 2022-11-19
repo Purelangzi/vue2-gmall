@@ -14,15 +14,15 @@
           </ul>
 
           <div class="content">
-            <form >
-              <div class="input-text clearFix">
+            <el-form :model="form" ref="form" :rules="rules" class="elForm" size="normal">    
+              <el-form-item  prop="phone" >
                 <span></span>
-                <input type="text" v-model="phone" placeholder="邮箱/用户名/手机号">
-              </div>
-              <div class="input-text clearFix">
+                <el-input v-model="form.phone" placeholder="手机号"></el-input>
+              </el-form-item>
+              <el-form-item  prop="password">
                 <span class="pwd"></span>
-                <input type="password" v-model="password" placeholder="请输入密码">
-              </div>
+                <el-input v-model="form.password" placeholder="请输入密码"></el-input>
+              </el-form-item>
               <div class="setting clearFix">
                 <label class="checkbox inline">
                   <input name="m1" type="checkbox" value="2" checked="">
@@ -30,9 +30,11 @@
                 </label>
                 <span class="forget">忘记密码？</span>
               </div>
-              <button class="btn" @click.prevent="userLogin">登&nbsp;&nbsp;录</button>
-            </form>
-
+              <el-form-item>
+                <el-button class="btn" type="primary" @click="userLogin">登&nbsp;&nbsp;录</el-button>
+              </el-form-item>
+            </el-form>
+            
             <div class="call clearFix">
               <ul>
                 <li><img src="./images/qq.png" alt=""></li>
@@ -69,25 +71,54 @@
   export default {
     name: 'Login',
     data() {
+      // 自定义手机号的验证规则
+      const validatePhone = (rule, value, callback) => {
+        if(!value) callback(new Error('请输入手机号'))
+        const reg = /^[1]([3-9])[0-9]{9}$/
+        if (!reg.test(value)) {
+          callback(new Error('手机格式不正确!请输入11位手机号'));
+        } else {
+          callback();
+        }
+      };
       return {
-        phone:'13700032456',
-        password:'111111'
+        form:{
+          phone:'13700032456',
+          password:'111111'
+        },
+        rules:{
+          phone:[
+            { validator: validatePhone, trigger: 'blur' }
+          ],
+          password:[
+            {required:true, message: '请输入密码',trigger: 'blur'},
+            {min:6,max:12,message:'密码长度6-12位'}
+        ],
+        }
+        
       }
     },
     methods:{
       // 用户登陆
-      async userLogin(){
-        const {phone,password} = this
-        if(!phone&&!password) return
-        try {
-          await this.$store.dispatch('user/userLogin',{phone,password})
-          // 登陆后立即跳转到登陆前没去成的页面
-          const toPath = this.$route.query.redirect||"/"
-          this.$router.push(toPath)
-          
-        } catch (error) {
-          alert(error.message)
-        }
+      userLogin(){
+        this.$refs.form.validate(async(valid) => {
+          if (valid) {
+            const {phone,password} = this.form
+            try {
+              await this.$store.dispatch('user/userLogin',{phone,password})
+              // 登陆后立即跳转到登陆前没去成的页面
+              const toPath = this.$route.query.redirect||"/"
+              this.$router.push(toPath)
+            } catch (error) {
+              alert(error.message)
+            }
+          } else {
+            this.$message.error('请输入用户名和密码')
+            return false;
+          }
+        });
+
+        
       }
     }
   }
@@ -152,48 +183,28 @@
           border: 1px solid #ddd;
           border-top: none;
           padding: 18px;
-
-          form {
-            margin: 15px 0 18px 0;
-            font-size: 12px;
-            line-height: 18px;
-
-            .input-text {
-              margin-bottom: 16px;
-
+          .elForm{
+            margin-top: 10px;
+            .el-form-item {
+              /deep/.el-form-item__content{
+                margin-left: 0 !important;
+                .el-input{
+                width: 85%;
+                }
+              }
               span {
                 float: left;
                 width: 37px;
-                height: 32px;
+                height: 39px;
                 border: 1px solid #ccc;
-                background: url(../../assets/images/icons.png) no-repeat -10px -201px;
+                background: url(../../assets/images/icons.png) no-repeat -10px -197px;
                 box-sizing: border-box;
                 border-radius: 2px 0 0 2px;
               }
-
               .pwd {
-                background-position: -72px -201px;
-              }
-
-              input {
-                width: 302px;
-                height: 32px;
-                box-sizing: border-box;
-                border: 1px solid #ccc;
-                border-left: none;
-                float: left;
-                padding-top: 6px;
-                padding-bottom: 6px;
-                font-size: 14px;
-                line-height: 22px;
-                padding-right: 8px;
-                padding-left: 8px;
-
-                border-radius: 0 2px 2px 0;
-                outline: none;
+                background-position: -72px -197px;
               }
             }
-
             .setting {
               label {
                 float: left;
@@ -203,7 +214,6 @@
                 float: right;
               }
             }
-
             .btn {
               background-color: #e1251b;
               padding: 6px;
@@ -219,7 +229,6 @@
               outline: none;
             }
           }
-
           .call {
             margin-top: 30px;
 
