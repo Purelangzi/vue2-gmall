@@ -1,5 +1,8 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
+  publicPath:'/vue2-gmall',
+  assetsDir:'vue2-gmall',
+  outputDir:'dist',
   productionSourceMap:false,
   transpileDependencies: true,
   lintOnSave:false, //关闭Eslint
